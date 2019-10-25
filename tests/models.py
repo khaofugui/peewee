@@ -20,6 +20,7 @@ from .base import requires_sqlite
 from .base import skip_if
 from .base import skip_unless
 from .base import BaseTestCase
+from .base import IS_CRDB
 from .base import IS_MYSQL
 from .base import IS_MYSQL_ADVANCED_FEATURES
 from .base import IS_POSTGRESQL
@@ -2226,6 +2227,7 @@ class TestForUpdateIntegration(ModelTestCase):
             self.database.commit()
             self.assertEqual(query.get().username, 'ziggy')
 
+    @skip_if(IS_CRDB, 'crdb does not support "nowait" option')
     def test_for_update_nowait(self):
         User.create(username='huey')
         zaizee = User.create(username='zaizee')
